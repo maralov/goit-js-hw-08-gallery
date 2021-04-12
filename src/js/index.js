@@ -1,10 +1,16 @@
 import imagesData from '../gallery-items.js'
 
+const modalActiveClass = 'is-open'
 const refs = {
   galleryContainer: document.querySelector('.js-gallery'),
+  modal: document.querySelector('.js-lightbox'),
+  modalOverlay: document.querySelector('.js-lightbox'),
+  modalImage: document.querySelector('.lightbox__image')
 }
 
-const makeGalleryMarkup = (images) => {
+// Make & render gallery layout START
+
+const makeGalleryMarkup = images => {
   return images.map(({
     preview: previewImgSrc,
     original: originalImgSrc,
@@ -28,7 +34,55 @@ const makeGalleryMarkup = (images) => {
 };
 
 const renderGalleryListItems = () => {
-  refs.galleryContainer.innerHTML = makeGalleryMarkup(imagesData)
+  refs.galleryContainer.innerHTML = makeGalleryMarkup(imagesData);
 };
 
 renderGalleryListItems();
+
+// Make & render gallery layout END
+
+// Open & close gallery modal START
+const setModalImage = (src, altTxt) => {
+  refs.modalImage.src = src
+  refs.modalImage.alt = altTxt
+}
+
+const clearModalImage = () => {
+  refs.modalImage.src = ''
+  refs.modalImage.alt = ''
+}
+
+const onMOdalOpen = e => {
+  e.preventDefault();
+  const { target } = e;
+  const imageSrc = target.dataset.source;
+  const imageAltText = target.alt;
+
+  if (!target.classList.contains('gallery__image')) return
+
+  setModalImage(imageSrc, imageAltText);
+
+  refs.modal.classList.add(modalActiveClass);
+
+  document.addEventListener('keyup', onModalClose);
+
+}
+
+const onModalClose = e => {
+  const { target } = e;
+
+  if (target.dataset.action || target.classList.contains('lightbox__overlay') || e.code === "Escape") {
+
+    refs.modal.classList.remove(modalActiveClass);
+    clearModalImage();
+    document.removeEventListener('keyup', onModalClose);
+  }
+
+}
+
+
+refs.modal.addEventListener('click', onModalClose);
+
+refs.galleryContainer.addEventListener('click', onMOdalOpen);
+
+// Open & close gallery modal END
