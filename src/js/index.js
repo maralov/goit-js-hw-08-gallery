@@ -33,11 +33,11 @@ const makeGalleryMarkup = images => {
   }).join('')
 };
 
-const renderGalleryListItems = () => {
-  refs.galleryContainer.innerHTML = makeGalleryMarkup(imagesData);
+const renderGalleryListItems = (itemsArray) => {
+  refs.galleryContainer.innerHTML = makeGalleryMarkup(itemsArray);
 };
 
-renderGalleryListItems();
+renderGalleryListItems(imagesData);
 
 // Make & render gallery layout END
 
@@ -52,7 +52,7 @@ const clearModalImage = () => {
   refs.modalImage.alt = ''
 }
 
-const onMOdalOpen = e => {
+const onModalOpen = e => {
   e.preventDefault();
   const { target } = e;
   const imageSrc = target.dataset.source;
@@ -83,6 +83,6 @@ const onModalClose = e => {
 
 refs.modal.addEventListener('click', onModalClose);
 
-refs.galleryContainer.addEventListener('click', onMOdalOpen);
+refs.galleryContainer.addEventListener('click', onModalOpen);
 
 // Open & close gallery modal END
