@@ -93,7 +93,7 @@ const slideModalImage = {
   currentImgIndex: 0,
 
   prevSlide() {
-    let index = imagesSrcArr.indexOf(refs.modalImage.src)
+    const index = imagesSrcArr.indexOf(refs.modalImage.src)
 
     this.setIndex(index - 1);
 
